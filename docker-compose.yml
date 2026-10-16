@@ -1,0 +1,37 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+
+  opa:
+    image: openpolicyagent/opa:latest
+    command: run --server --addr=0.0.0.0:8181 /policy/policy.rego
+    volumes:
+      - ./opa:/policy:ro
+    ports:
+      - "8181:8181"
+
+  backend:
+    build: ./backend
+    environment:
+      OPA_URL: http://opa:8181
+    depends_on:
+      - opa
+    ports:
+      - "8000:8000"
+
+  mock-backend:
+    image: hashicorp/http-echo:1.0.0
+    command: ["-listen=:5678", "-text=mock backend"]
+    ports:
+      - "5678:5678"
+
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "5173:5173"
