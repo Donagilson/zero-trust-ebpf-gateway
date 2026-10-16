@@ -3,6 +3,7 @@ ARCH ?= x86
 COMPOSE ?= docker compose -f ../docker-compose.yml
 PYTHON ?= python
 NPM ?= npm
+BPF_CFLAGS ?= -O2 -g -target bpf -D__TARGET_ARCH_$(ARCH) -Wall -Werror
 
 .PHONY: help all build up down logs status backend-install backend-dev dashboard-install dashboard-dev ebpf clean
 
@@ -23,7 +24,7 @@ help:
 	@echo   dashboard-dev     Run the dashboard development server
 	@echo
 	@echo eBPF:
-	@echo   all or ebpf        Build the eBPF object
+	@echo   all or ebpf        Build the TC eBPF object
 	@echo   clean              Remove the generated eBPF object
 
 all: filter.bpf.o
@@ -31,7 +32,7 @@ all: filter.bpf.o
 ebpf: all
 
 filter.bpf.o: filter.bpf.c
-	$(CLANG) -O2 -g -target bpf -D__TARGET_ARCH_$(ARCH) -c $< -o $@
+	$(CLANG) $(BPF_CFLAGS) -c $< -o $@
 
 build:
 	$(COMPOSE) build
