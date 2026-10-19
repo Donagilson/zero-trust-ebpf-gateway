@@ -11,10 +11,10 @@ policy checks, and an eBPF data plane.
 - `dashboard/` — React + Vite dashboard
 - `docker-compose.yml` — local service definitions
 
-This is a scaffold, not a production-ready security gateway. The eBPF program,
-map management, identity verification, and network attachment must be
-implemented and tested for the target Linux kernel and deployment environment
-before use.
+This is a scaffold, not a production-ready security gateway. The eBPF map
+manager uses `bpftool` to update the `allowed_flows` map and requires that map
+to be loaded already. Identity verification, network attachment, and the
+deployment environment must be tested for the target Linux kernel before use.
 
 ## Quick start
 
