@@ -1,0 +1,6 @@
+services:
+  backend:
+    cap_add:
+      - BPF
+    volumes:
+      - /sys/fs/bpf:/sys/fs/bpf:ro

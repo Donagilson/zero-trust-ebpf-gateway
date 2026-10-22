@@ -1,0 +1,9 @@
+[Interface]
+Address = 10.77.0.2/32
+PrivateKey = REPLACE_WITH_CLIENT_PRIVATE_KEY
+
+[Peer]
+PublicKey = REPLACE_WITH_SERVER_PUBLIC_KEY
+Endpoint = REPLACE_WITH_SERVER_PUBLIC_IP:51820
+AllowedIPs = 10.77.0.0/24, 172.30.250.0/24
+PersistentKeepalive = 25
